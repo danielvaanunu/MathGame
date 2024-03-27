@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/static/style_profile.css">
+</head>
+<body>
+
+    <button onclick="window.location.href='/home_page'" class="home_btn" style="position: absolute; top: 75%; left: 68%;">
+        <span class="buttonText">Return to <br> Home Page</span>
+        <img src="/static/images/home.jpg" class="btn_image" alt="img">
+    </button>
+
+        <div id="profiledata" class="profiledata">
+        <p id="user_name">User Name:  <span id="usernameText">{{user_name}}</span></p>
+        <button class="editnamebutton" onclick="makeNameEditable()"></button>
+        <p id="password">Password:  <span id="userpasswordText">{{password}}</span></p>
+        <button class="editpasswordbutton" onclick="makePasswordEditable()"></button>
+        <p id="addition_score">Addition Game Score:  {{addition_score}}</p>
+        <p id="subtraction_score">Subtraction Game Score:  {{subtraction_score}}</p>
+        <p id="multiplication_score">Multiplication Game Score:  {{multiplication_score}}</p>
+        <p id="division_score">Division Game Score:  {{division_score}}</p>
+        <p id="total_score">Total Score:  {{total_score}}</p>
+    </div>
+
+    <div id="presentedMessage" class="presentedMessage"></div>
+
+  <script>
+        function makeNameEditable() {
+            var field = document.getElementById('usernameText');
+            var input = document.createElement('input');
+            // Prepare the data object containing both old and new user IDs
+            var data = {
+                current_user_name: field.textContent,
+                new_data: input,
+                name_or_password: 'n'
+            };
+            input.setAttribute('type', 'text');
+            input.setAttribute('value', field.textContent);
+            input.addEventListener('blur', function() {
+                var newUsername = input.value; // Save the new username as a variable
+                field.textContent = newUsername; // Update the displayed username
+                input.parentNode.replaceChild(field, input); // Replace the input with the updated username
+                // Add an event listener for clicks on the document
+                document.addEventListener('click', function(event) {
+                    // Call handleClick with event data
+                    handleClick(event, data);
+                });
+            });
+            field.parentNode.replaceChild(input, field); // Replace the username with the input field
+            input.focus(); // Set focus on the input field
+        }
+
+        function makePasswordEditable() {
+            var field = document.getElementById('userpasswordText');
+            var input = document.createElement('input');
+            var username = document.getElementById('usernameText');
+            // Prepare the data object containing new user password and current name
+            var data = {
+                current_user_name: username.textContent,
+                new_data: input,
+                name_or_password: 'p'
+            };
+            input.setAttribute('type', 'text');
+            input.setAttribute('value', field.textContent);
+            input.addEventListener('blur', function() {
+                var newPassword = input.value; // Save the new username as a variable
+                field.textContent = newPassword; // Update the displayed username
+                input.parentNode.replaceChild(field, input); // Replace the input with the updated username
+                // Add an event listener for clicks on the document
+                document.addEventListener('click', function(event) {
+                // Call handleClick with event data
+                handleClick(event, data);
+                });
+            });
+            field.parentNode.replaceChild(input, field); // Replace the username with the input field
+            input.focus(); // Set focus on the input field
+        }
+
+        function handleClick(event, data) {
+            // Send a request to app.py when the user clicks anywhere
+            fetch('/update_user_info', {
+                method: 'POST',
+                // You can send any necessary data in the request body
+                body: JSON.stringify({
+                    current_user_name: data.current_user_name,
+                    new_data: data.new_data.value,
+                    name_or_password: data.name_or_password
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json()) // handles the response from the server
+            .then(res => {
+              document.getElementById("presentedMessage").innerText = res.message;
+              var username = document.getElementById('usernameText');
+
+              if (res.message.length !== 0){
+                 username.textContent = data.current_user_name;
+                 username.parentNode.replaceChild(username, username); // Replace the username with the input field
+            }
+              else if (data.name_or_password === 'n'){
+                 username.textContent = data.new_data.value;
+                 username.parentNode.replaceChild(username, username); // Replace the username with the input field
+              }
+
+            });
+
+
+        }
+    </script>
+
+</body>
+</html>

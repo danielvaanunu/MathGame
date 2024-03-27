@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Score Board</title>
+    <link rel="stylesheet" href="/static/style_scoreboard.css">
+
+</head>
+<body>
+
+    <button onclick="window.location.href='/home_page'" class="home_btn" style="position: absolute; top: 68%; left: 68%;">
+        <span class="buttonText">Return to <br> Home Page</span>
+        <img src="/static/images/home.jpg" class="btn_image" alt="img">
+    </button>
+
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Place</th>
+                        <th>User Name</th>
+                        <th>Total Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, user in users.iterrows() %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ user['user_name'] }}</td>
+                            <td>{{ user['total_score'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+</body>
+</html>

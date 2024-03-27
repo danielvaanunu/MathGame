@@ -1,0 +1,86 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Comic Sans MS', fangsong;
+    font-size: 18px;
+}
+
+body {
+    background-image: url("images/profile.gif");
+    background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.dontDisplay{
+    display: none;
+}
+
+.presentedMessage{
+    position: absolute;
+    top: 33%;
+    left: 50%;
+}
+
+.home_btn {
+    font-size: 14px;
+    cursor: pointer;
+    width: 90px;
+    height: 120px;
+    background-color: white;
+    border: 20px;
+    border-radius: 10px;
+}
+
+.home_btn:hover{
+    background-color: lightgray;
+}
+
+.buttonText{
+    font-size: 12px;
+}
+
+.btn_image{
+    width: 80px;
+    height: 80px;
+}
+
+.profiledata{
+    position: relative;
+    top: 30.5%;
+    left: 23%;
+    font-size: 20px;
+    font-family: 'Gill Sans MT Ext Condensed Bold', cursive;
+    line-height: 3.2;
+    word-spacing: 1.5px;
+}
+
+.editnamebutton{
+    height: 30px;
+    width: 30px;
+    background-image: url("images/editicon.jpg");
+    background-color: white;
+    background-size: contain;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 3%;
+    left: 20.5%;
+}
+
+.editpasswordbutton{
+    height: 30px;
+    width: 30px;
+    background-image: url("images/editicon.jpg");
+    background-color: white;
+    background-size: contain;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 16.5%;
+    left: 19.5%;
+}

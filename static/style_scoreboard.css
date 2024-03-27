@@ -1,0 +1,72 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Comic Sans MS', fangsong;
+    font-size: 18px;
+}
+
+body {
+    background-image: url("images/score board.gif");
+    background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.table{
+    position: absolute;
+    top: 30%;
+    left: 40%;
+}
+
+tr:nth-child(even) {
+  background-color: lightcyan;
+}
+
+tr:hover {
+    background-color: lightblue;
+}
+
+.table th {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 18px;
+    height: 40px;
+}
+
+.table td {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    height: 30px;
+}
+
+.table th {
+    background-color: lightskyblue;
+}
+
+.home_btn {
+    font-size: 14px;
+    cursor: pointer;
+    width: 90px;
+    height: 120px;
+    background-color: white;
+    border: 20px;
+    border-radius: 10px;
+}
+
+.home_btn:hover{
+    background-color: lightgray;
+}
+
+.buttonText{
+    font-size: 12px;
+}
+
+.btn_image{
+    width: 80px;
+    height: 80px;
+}

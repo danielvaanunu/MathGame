@@ -1,0 +1,50 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Comic Sans MS', fangsong;
+    font-size: 20px;
+}
+
+body {
+    background-image: url("images/about.gif");
+    background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.aboutus {
+    position: absolute;
+    top: 28%;
+    left: 26.5%;
+    line-height: 1.5;
+}
+
+.aboutus p {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.home_btn {
+    font-size: 14px;
+    cursor: pointer;
+    width: 90px;
+    height: 120px;
+    background-color: white;
+    border: 20px;
+    border-radius: 10px;
+}
+
+.home_btn:hover{
+    background-color: lightgray;
+}
+
+.buttonText{
+    font-size: 12px;
+}
+
+.btn_image{
+    width: 80px;
+    height: 80px;
+}

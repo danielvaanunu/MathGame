@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <title>Login</title>
+    <link rel="stylesheet" href="/static/style_login.css">
+</head>
+   <body>
+      <div class="wrapper">
+         <div class="title-text">
+            <div class="title login">
+               Login
+            </div>
+            <div class="title signup">
+               Signup
+            </div>
+         </div>
+         <div class="form-container">
+            <div class="slide-controls">
+               <input type="radio" name="slide" id="login" checked>
+               <input type="radio" name="slide" id="signup">
+               <label for="login" class="slide login">Login</label>
+               <label for="signup" class="slide signup">Signup</label>
+               <div class="slider-tab"></div>
+            </div>
+            <div class="form-inner">
+               <form action="/user_login" class="login" method="POST">
+                  <div class="field">
+                     <input type="text" id="username" name="username" placeholder="User Name" required>
+                  </div>
+                  <div class="field">
+                     <input type="password" id="userpassword" name="userpassword" placeholder="Password" required>
+                  </div>
+                     <div class="pass-link">
+                        <a onclick="givePasswordHint()">Forgot password?</a>
+                     </div>
+                  <div class="field btn">
+                     <div class="btn-layer"></div>
+                     <input type="submit" name="login_button" value="Login">
+                  </div>
+                  <div class="signup-link">
+                     Not a member? <a href="">Signup now</a>
+                  </div>
+               </form>
+               <form id="sign_up" action="/user_signup" class="signup" method="POST">
+                  <div class="field">
+                     <input type="text" id="user_name" name="user_name" placeholder="User Name" required>
+                  </div>
+                  <div class="field">
+                     <input type="password" id="user_password" name="user_password" placeholder="Password" required>
+                  </div>
+                  <div class="field">
+                     <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" required>
+                  </div>
+                  <div class="field btn">
+                     <div class="btn-layer"></div>
+                     <input type="submit" name="sign_up_button" value="Signup">
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+
+      <div id="presentedMessage" class="presentedMessage" style="font-size: 25px;"></div>
+      <div id="container"></div>
+      <script>
+
+         const loginText = document.querySelector(".title-text .login");
+         const loginForm = document.querySelector("form.login");
+         const loginBtn = document.querySelector("label.login");
+         const signupBtn = document.querySelector("label.signup");
+         const signupLink = document.querySelector("form .signup-link a");
+         signupBtn.onclick = (()=>{
+           loginForm.style.marginLeft = "-50%";
+           loginText.style.marginLeft = "-50%";
+         });
+         loginBtn.onclick = (()=>{
+           loginForm.style.marginLeft = "0%";
+           loginText.style.marginLeft = "0%";
+         });
+         signupLink.onclick = (()=>{
+           signupBtn.click();
+           return false;
+         });
+      </script>
+
+
+     <script>
+     function handleFormSubmit(event) {
+         event.preventDefault();
+          // Check which submit button:
+          var submitButtonName = event.submitter.name;
+          if (submitButtonName === "sign_up_button") {
+             var user_name = document.getElementById("user_name").value;
+             var user_password = document.getElementById("user_password").value;
+             var password_confirmation = document.getElementById("password_confirmation").value;
+
+             fetch('/user_signup', { // sending a POST request to the '/user_signup' with form data containing the user's info
+                 method: 'POST',
+                 body: new URLSearchParams({
+                     'user_name': user_name,
+                     'user_password': user_password,
+                     'password_confirmation': password_confirmation
+                 }),
+                 headers: {
+                     'Content-Type': 'application/x-www-form-urlencoded'
+                 }
+             })
+                 .then(response => response.json()) // handles the response from the server
+                 .then(data => {
+                     document.getElementById("presentedMessage").innerText = data.message;
+
+                     var container = document.getElementById("container");
+
+                     // Create a button element
+                     var button = document.createElement("button");
+                     button.textContent = "Lets start playing!";
+                     button.style.backgroundColor = "#F0DEFF";
+                     button.style.fontSize = "20px";
+                     button.style.fontFamily = "Poppins";
+                     button.style.color = "black";
+                     button.style.padding = "15px 20px";
+                     button.style.border = "none";
+                     button.style.borderRadius = "8px";
+                     button.style.cursor = "pointer";
+                     button.style.width = "200px";
+                     button.style.height = "60px";
+
+                     // Set the position of the button
+                     button.style.position = "absolute";
+                     button.style.top = "85%";
+                     button.style.left = "45%";
+                     // Function to be executed when button is clicked
+                     function handleClick() {
+                        window.location.href = "/home_page";
+                     }
+                     // Add an event listener to the button
+                     button.addEventListener("click", handleClick);
+
+                     // Check the condition
+                     // var conditionMet = (data.flag);
+
+                     // If condition is met, append the button to the container
+                     if (data.flag) {
+                        container.appendChild(button);
+                     }
+                 });
+          } else {
+             var username = document.getElementById("username").value;
+             var userpassword = document.getElementById("userpassword").value;
+
+             fetch('/user_login', { // sending a POST request to the '/user_signup' with form data containing the user's info
+                 method: 'POST',
+                 body: new URLSearchParams({
+                     'username': username,
+                     'userpassword': userpassword,
+                 }),
+                 headers: {
+                     'Content-Type': 'application/x-www-form-urlencoded'
+                 }
+             })
+                 .then(response => response.json()) // handles the response from the server
+                 .then(data => {
+                     document.getElementById("presentedMessage").innerText = data.message;
+                     if (data.flag){
+                        window.location.href = "/home_page";
+                     }
+                 });
+          }
+
+     };
+        // Attach event listener to the login form
+       document.querySelector("form.login").addEventListener("submit", handleFormSubmit);
+
+       // Attach event listener to the signup form
+       document.querySelector("form.signup").addEventListener("submit", handleFormSubmit);
+
+       function givePasswordHint(){
+         var username = document.getElementById("username").value;
+         fetch('/password_hint', { // sending a POST request to the '/user_signup' with form data containing the user's info
+             method: 'POST',
+             body: new URLSearchParams({
+                 'username': username
+             }),
+             headers: {
+                 'Content-Type': 'application/x-www-form-urlencoded'
+             }
+         })
+         .then(response => response.json()) // handles the response from the server
+                .then(data => {
+                    document.getElementById("presentedMessage").innerText = data.msg;
+                });
+      }
+
+      </script>
+
+   </body>
+
+</html>

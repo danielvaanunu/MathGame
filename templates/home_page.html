@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/static/style_homepage.css">
+</head>
+<body>
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closeBtn" onclick="closeNav()">×</a>
+            <a onclick="window.location.href='/profile'">Profile</a>
+            <a onclick="window.location.href='/score_board'">Score Board</a>
+            <a onclick="window.location.href='/about'">About</a>
+        </div>
+
+        <button class="openBtn" onclick="openNav()">☰</button>
+
+        <script>
+            function openNav() {
+              document.getElementById("mySidebar").style.width = "250px";
+              document.getElementById("main").style.marginLeft = "250px";
+            }
+
+            function closeNav() {
+              document.getElementById("mySidebar").style.width = "0";
+              document.getElementById("main").style.marginLeft= "0";
+            }
+        </script>
+
+        <div>
+            <button class="button" style="position: absolute; top: 35%; left: 20%;" onclick="window.location.href='/addition_game'">
+                <span class="buttonText">Go to Addition game</span>
+                <img src="/static/images/addition.jpg" class="image">
+            </button>
+
+            <button class="button" style="position: absolute; top: 35%; left: 35%;" onclick="window.location.href='/subtraction_game'">
+                <span class="buttonText">Go to Subtraction game</span>
+                <img src= "/static/images/subtraction.jpg" class="image">
+            </button>
+
+            <button class="button" style="position: absolute; top: 35%; left: 50%;" onclick="window.location.href='/multiplication_game'">
+                <span class="buttonText">Go to Multiplication game</span>
+                <img src= "/static/images/multiplication.jpg" class="image">
+            </button>
+            <button class="button" style="position: absolute; top: 35%; left: 65%;" onclick="window.location.href='/divide_game'">
+                <span class="buttonText">Go to Divide game</span>
+                <img src= "/static/images/divide.jpg" class="image">
+            </button>
+        </div>
+
+        <button class="logout" style="position: absolute; top: 85%; left: 90%;" onclick="window.location.href='/'">
+            <span class="buttonText">Log Out</span>
+            <img src="/static/images/door.jpg" class="logoutImg" alt="img">
+        </button>
+
+        <div class="center">
+        <h1>Recommendations:</h1>
+            <div>
+                {% for recommendation in data %}
+                    <p class="txt">{{ recommendation }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+</body>
+</html>

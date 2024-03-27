@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiplication Game</title>
+    <link rel="stylesheet" href="/static/style_games.css">
+    <style>
+        .background {
+            background-image: url('/static/images/math games*.gif');
+            background-repeat: repeat;
+            background-size: cover;
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="background">
+        <button onclick="saveParametersAndRedirect('/home_page')" class="home_btn" id="return_btn" style="position: absolute; top: 68%; left: 68%;">
+            <span class="buttonText">Return to <br> Home Page</span>
+            <img src="/static/images/home.jpg" class="btn_image">
+        </button>
+
+        <script>
+            function saveParametersAndRedirect(destination) {
+                var page_Type = document.getElementById("page_type").value;
+                var difficulty_Level = document.getElementById("difficulty_level").innerText;
+
+                fetch('/save_parameters', {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                    'current_level': difficulty_Level,
+                    'type': page_Type
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("Parameters saved successfully!");
+                        window.location.href = destination; // Redirect to the specified destination
+                    }
+                })
+            }
+        </script>
+
+        <p id="equation" class="dontDisplay">{{data}}</p>
+<!--        <p id="difficulty_level" class="dontDisplay">{{difficulty_level}}</p>-->
+        <p id="difficulty_level">{{difficulty_level}}</p>
+
+        <div id="imageContainer" class="imageContainer">
+            {% for image_path in images_path %}
+                <img src="{{image_path}}" class="image" alt="Digit Image">
+            {% endfor %}
+        </div>
+
+        <form id="answerForm" class="answerForm" action="/check_answer" method="POST">
+            <input type="hidden" id="page_type" value="multiplication_game">
+            <label for="user_answer">Enter your answer:</label>
+            <input type="number" id="user_answer" name="user_answer" required>
+            <button type="submit" id="checkAnswerBtn" class="button">Check</button>
+        </form>
+
+        <div id="answerMessage" class="answerMessage"></div>
+
+        <script>
+        document.getElementById("answerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var pageType = document.getElementById("page_type").value;
+            var userAnswer = document.getElementById("user_answer").value;
+            var equationVar = document.getElementById("equation").innerText;
+            var difficulty_level = document.getElementById("difficulty_level").innerText;
+
+            fetch('/check_answer', { // sending a POST request to the '/check_addition_answer' with form data containing the user's answer and the current equation
+                method: 'POST',
+                body: new URLSearchParams({
+                    'user_answer': userAnswer,
+                    'equation': equationVar,
+                    'difficulty_level': difficulty_level,
+                    'page_type': pageType
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+
+                .then(response => response.json()) // handles the response from the server
+                .then(data => {
+                    document.getElementById("answerMessage").innerText = data.message;
+                    document.getElementById("user_answer").value = "";
+
+                    if (data.flag) {
+                        // Update the equation with the new data
+                        document.getElementById("equation").innerText = data.data;
+                        document.getElementById("difficulty_level").innerText = data.difficulty_level;
+                        // Split the equation string into individual characters
+                        var equation_var = data.data.split("");
+                        var images_path = [];
+
+                        // Loop through each character in the equation
+                        equation_var.forEach(char => {
+                            if(char !== " ")
+                                images_path.push(`static/images/${char}.jpg`);
+                        });
+
+                        // Clear the container before adding new images
+                        var imageContainer = document.getElementById("imageContainer");
+                        imageContainer.innerHTML = '';
+
+                        // Loop through the image paths and create img elements for each path
+                        images_path.forEach(image_path => {
+                            var img = document.createElement('img');
+                            img.src = image_path;
+                            img.alt = "Digit Image";
+                            img.height = 100;
+                            imageContainer.appendChild(img);
+                        });
+                    }
+                });
+        });
+         </script>
+</div>
+</body>
+</html>
